@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AI Self Billing Trolley</title>
+  </head>
+  <body>
+    <h2>Detected Items</h2>
+    <ul id="cart"></ul>
+    <h3>Total: ₹<span id="total">0</span></h3>
+
+    <script>
+      function loadItems() {
+        fetch("/detect")
+          .then((res) => res.json())
+          .then((data) => {
+            let total = 0;
+            const cart = document.getElementById("cart");
+            cart.innerHTML = "";
+
+            data.forEach((item) => {
+              total += item.price;
+              cart.innerHTML += `<li>${item.name} - ₹${item.price}</li>`;
+            });
+
+            document.getElementById("total").innerText = total;
+          });
+      }
+
+      // 🔥 AUTO LOAD WHEN PAGE OPENS
+      window.onload = loadItems;
+    </script>
+  </body>
+</html>
